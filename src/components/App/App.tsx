@@ -1,13 +1,17 @@
-import aviasalesLogo from '../../data/images/Logo.svg';
+import { AsideMenu } from '../AsideMenu';
+import Logo from '../../data/images/Logo.svg';
 
 import styles from './index.module.scss';
 
-function App() {
+const App = () => {
   return (
     <div className={styles.app}>
-      <img className={styles.logo} src={aviasalesLogo} alt="logo" />
+      <img className={styles.logo} src={Logo} alt="logo" />
+      <div className={styles.main}>
+        <AsideMenu />
+      </div>
     </div>
   );
-}
+};
 
 export { App };

@@ -2,3 +2,15 @@
   display: flex;
   flex-direction: column;
 }
+
+.logo {
+  width: 60px;
+  height: 60px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main {
+  display: flex;
+  gap: 20px;
+}

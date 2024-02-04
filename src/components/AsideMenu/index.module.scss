@@ -1,0 +1,61 @@
+.aside-menu {
+  box-sizing: border-box;
+  width: 230px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px #e4e4e4;
+}
+
+.aside-transfers {
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+    padding-left: 20px;
+    text-align: left;
+    vertical-align: middle;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #f1fcff;
+    }
+
+    &::before {
+        content: '';
+        display: inline-block;
+        position: relative;
+        top: 5px;
+        text-indent: 0;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #9abbce;
+        border-radius: 2px;
+        margin-right: 10px;
+
+    }
+}
+
+input:checked + .aside-transfers::before {
+    content: '✓';
+    border-color: #2196F3;
+    color: #2196F3;
+}
+
+.text {
+    font-size: 12px;
+
+    &Title {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 20px;
+        padding-bottom: 10px;
+    }
+}
+
+.checkbox {
+    display: none;
+}
+
+
