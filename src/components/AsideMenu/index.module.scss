@@ -1,61 +1,62 @@
 .aside-menu {
   box-sizing: border-box;
-  width: 230px;
-  height: 250px;
+  width: 320px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0 5px 10px #e4e4e4;
+  box-shadow: 5px 5px 10px #e4e4e4;
+
+  @media (min-width: 768px) {
+    width: 230px;
+    height: 250px;
+  }
 }
 
 .aside-transfers {
-    height: 40px;
-    line-height: 40px;
-    vertical-align: middle;
-    padding-left: 20px;
-    text-align: left;
-    vertical-align: middle;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  padding-left: 20px;
+  text-align: left;
+  vertical-align: middle;
+  transition: 0.3s;
 
-    &:hover {
-        cursor: pointer;
-        background-color: #f1fcff;
+  .checkbox {
+    box-sizing: content-box;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 5px;
+    appearance: none;
+
+    border: none;
+    margin: 0;
+    margin-right: 10px;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0.5' y='0.5' width='19' height='19' rx='1.5' stroke='%239ABBCE'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center left;
+
+    &:checked {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0.5' y='0.5' width='19' height='19' rx='1.5' stroke='%232196F3'/%3e%3cpath d='M8.28571 14L4 10.1612L5.20857 9.0787L8.28571 11.8273L14.7914 6L16 7.09021L8.28571 14Z' fill='%232196F3'/%3e%3c/svg%3e");
     }
+  }
 
-    &::before {
-        content: '';
-        display: inline-block;
-        position: relative;
-        top: 5px;
-        text-indent: 0;
-        width: 20px;
-        height: 20px;
-        border: 1px solid #9abbce;
-        border-radius: 2px;
-        margin-right: 10px;
-
-    }
-}
-
-input:checked + .aside-transfers::before {
-    content: '✓';
-    border-color: #2196F3;
-    color: #2196F3;
+  &:hover {
+    cursor: pointer;
+    background-color: #f1fcff;
+  }
 }
 
 .text {
+  font-size: 13px;
+
+  &Title {
     font-size: 12px;
-
-    &Title {
-        font-size: 12px;
-        font-weight: 600;
-        padding: 20px;
-        padding-bottom: 10px;
-    }
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    padding: 20px;
+    padding-bottom: 5px;
+  }
 }
-
-.checkbox {
-    display: none;
-}
-
-

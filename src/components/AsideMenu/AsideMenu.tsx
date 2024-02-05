@@ -1,8 +1,21 @@
+import { ReactElement } from 'react';
+import { useMediaQuery } from 'react-responsive';
+
 import styles from './index.module.scss';
 
-const AsideMenu = () => {
+interface AsideMenuProps {
+  isOpen?: boolean;
+}
+
+const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const mobileStyle: React.CSSProperties = {
+    position: 'absolute',
+    transition: 'transform 0.3s easy-in-out',
+    transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
+  };
   return (
-    <aside className={styles['aside-menu']}>
+    <aside className={styles['aside-menu']} style={isMobile ? mobileStyle : {}}>
       <span className={styles.textTitle}>КОЛИЧЕСТВО ПЕРЕСАДОК</span>
       <label className={styles['aside-transfers']}>
         <input className={styles.checkbox} type="checkbox" id="transfer-all" name="transfer-all" checked={false} />

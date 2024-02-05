@@ -1,16 +1,71 @@
 .app {
   display: flex;
   flex-direction: column;
+
+  .buttonOpen, .buttonClose {
+    position: fixed;
+    z-index: 5;
+    top: 50%;
+    width: 20px;
+    height: 40px;
+    background-color: #2196F3;
+    border: none;
+    box-shadow: 0 2px 5px 2px #e4e4e4;
+    transition: left 0.3s ease-in-out;
+  }
+
+  .buttonClose {
+    left: 0;
+    border-radius: 0 20px 20px 0;
+  }
+
+  .buttonOpen {
+    left: 303px;
+    border-radius: 20px 0 0 20px;
+  }
+
+  .buttonClose::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    top: 0;
+    left: -5px;
+    border-top: 1px solid #fff;
+    border-right: 1px solid #fff;
+    position: relative;
+    transform: rotate(45deg);
+    transition: 0.3s;
+  }
+
+  .buttonOpen::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    top: 0;
+    left: 0;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    transform: rotate(-45deg);
+    transition: 0.3s;
+  }
 }
 
 .logo {
-  width: 60px;
-  height: 60px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 0;
+
+  @media (min-width: 768px) {
+    margin-bottom: 50px;
+  }
 }
 
-.main {
-  display: flex;
-  gap: 20px;
+.app-page {
+
+  @media (min-width: 768px) {
+    display: flex;
+    gap: 20px;
+  }
 }
