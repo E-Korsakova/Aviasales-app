@@ -15,6 +15,10 @@
     transition: 0.3s;
     cursor: pointer;
 
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+
     &:last-child {
       border-right: none;
       border-radius: 0 5px 5px 0;
