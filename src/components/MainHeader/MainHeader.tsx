@@ -1,34 +1,34 @@
-import { useActions } from '../../hooks/useActions';
-import { useTypeSelector } from '../../hooks/useTypeSelector';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { cheapest, fastest, optimal } from '../../store/fetchSlice';
 
 import styles from './index.module.scss';
 
 const MainHeader = () => {
-  const { cheapest, fastest, optimal } = useTypeSelector((state) => state.sort);
-  const { sortCheapest, sortFastest, sortOptimal } = useActions();
+  const dispatch = useAppDispatch();
+  const stateFetch = useAppSelector((state) => state.fetch);
   return (
     <header className={styles.header}>
       <button
         id={'cheapest'}
         aria-label="cheapest"
-        onClick={sortCheapest}
-        className={cheapest ? styles.headerButtonActive : styles.headerButton}
+        onClick={() => dispatch(cheapest())}
+        className={stateFetch.sort === 'cheapest' ? styles.headerButtonActive : styles.headerButton}
       >
         <span className={styles.text}>САМЫЙ ДЕШЕВЫЙ</span>
       </button>
       <button
         id={'fastest'}
         aria-label="fastest"
-        onClick={sortFastest}
-        className={fastest ? styles.headerButtonActive : styles.headerButton}
+        onClick={() => dispatch(fastest())}
+        className={stateFetch.sort === 'fastest' ? styles.headerButtonActive : styles.headerButton}
       >
         <span className={styles.text}>САМЫЙ БЫСТРЫЙ</span>
       </button>
       <button
         id={'optimal'}
         aria-label="optimal"
-        onClick={sortOptimal}
-        className={optimal ? styles.headerButtonActive : styles.headerButton}
+        onClick={() => dispatch(optimal())}
+        className={stateFetch.sort === 'optimal' ? styles.headerButtonActive : styles.headerButton}
       >
         <span className={styles.text}>ОПТИМАЛЬНЫЙ</span>
       </button>

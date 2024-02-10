@@ -1,7 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { rootReducer } from './reducers';
+import fetchReducer from './fetchSlice';
+import filterReducer from './filterSlice';
 
-export const store = configureStore({ reducer: rootReducer });
+const store = configureStore({
+  reducer: {
+    fetch: fetchReducer,
+    filter: filterReducer,
+  },
+});
 
-export type RootState = ReturnType<typeof rootReducer>;
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
