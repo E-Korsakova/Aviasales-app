@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import fetchReducer from './fetchSlice';
-import filterReducer from './filterSlice';
 
 const store = configureStore({
   reducer: {
     fetch: fetchReducer,
-    filter: filterReducer,
   },
 });
 

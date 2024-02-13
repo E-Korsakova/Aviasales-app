@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setAll, setNoTransfers, setOneTransfer, setThreeTransfer, setTwoTransfer } from '../../store/filterSlice';
+import { setAll, setNoTransfers, setOneTransfer, setThreeTransfer, setTwoTransfer } from '../../store/fetchSlice';
 
 import styles from './index.module.scss';
 
@@ -19,7 +19,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
   };
 
   const dispatch = useAppDispatch();
-  const stateFilter = useAppSelector((state) => state.filter);
+  const stateFetch = useAppSelector((state) => state.fetch);
 
   return (
     <aside className={styles['aside-menu']} style={isMobile ? mobileStyle : {}}>
@@ -30,7 +30,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           type="checkbox"
           id="all"
           name="transfer-all"
-          checked={stateFilter.filters.all}
+          checked={stateFetch.filters.all}
           onChange={() => dispatch(setAll())}
         />
         <span className={styles.text}>Bce</span>
@@ -41,7 +41,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           type="checkbox"
           id="noTransfers"
           name="transfer-0"
-          checked={stateFilter.filters.noTransfers}
+          checked={stateFetch.filters.noTransfers}
           onChange={() => dispatch(setNoTransfers())}
         />
         <span className={styles.text}>Без пересадок</span>
@@ -52,7 +52,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           type="checkbox"
           id="oneTransfer"
           name="transfer-1"
-          checked={stateFilter.filters.oneTransfer}
+          checked={stateFetch.filters.oneTransfer}
           onChange={() => dispatch(setOneTransfer())}
         />
         <span className={styles.text}>1 пересадка</span>
@@ -63,7 +63,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           type="checkbox"
           id="twoTransfers"
           name="transfer-2"
-          checked={stateFilter.filters.twoTransfers}
+          checked={stateFetch.filters.twoTransfers}
           onChange={() => dispatch(setTwoTransfer())}
         />
         <span className={styles.text}>2 пересадки</span>
@@ -74,7 +74,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           type="checkbox"
           id="threeTransfers"
           name="transfer-3"
-          checked={stateFilter.filters.threeTransfers}
+          checked={stateFetch.filters.threeTransfers}
           onChange={() => dispatch(setThreeTransfer())}
         />
         <span className={styles.text}>3 пересадки</span>
