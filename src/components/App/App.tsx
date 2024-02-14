@@ -6,7 +6,7 @@ import { AsideMenu } from '../AsideMenu';
 import { Main } from '../Main';
 import Logo from '../../data/images/Logo.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchTickets, getFilteredTickets, searchId } from '../../store/fetchSlice';
+import { cheapest, fastest, fetchTickets, getFilteredTickets, optimal, searchId } from '../../store/fetchSlice';
 
 import styles from './index.module.scss';
 
@@ -14,6 +14,7 @@ function App(): ReactElement {
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFilter, setIsFilter] = useState(false);
 
   const dispatch = useAppDispatch();
   const stateFetch = useAppSelector((state) => state.fetch);
@@ -29,14 +30,32 @@ function App(): ReactElement {
   }, [stateFetch.searchId, stateFetch.loading]);
 
   useEffect(() => {
-    if (stateFetch.tickets.length !== 0) dispatch(getFilteredTickets());
-    // console.log('tickets', stateFetch.tickets);
-  }, [stateFetch.filters, stateFetch.tickets]);
+    setIsFilter(false);
+    if (stateFetch.tickets.length !== 0) {
+      // setIsLoading(true);
+      dispatch(getFilteredTickets(stateFetch));
+      // setIsLoading(false);
+      // if (stateFetch.sort === 'cheapest') dispatch(cheapest());
+      // if (stateFetch.sort === 'fastest') dispatch(fastest());
+      // if (stateFetch.sort === 'optimal') dispatch(optimal());
+      setIsFilter(true);
+    }
+  }, [
+    stateFetch.filters.all,
+    stateFetch.filters.noTransfers,
+    stateFetch.filters.oneTransfer,
+    stateFetch.filters.twoTransfers,
+    stateFetch.filters.threeTransfers,
+    stateFetch.tickets,
+  ]);
 
-  // useEffect(() => {
-  //   if (stateFetch.filteredTickets.length !== 0) dispatch(getSortedTickets());
-  //   console.log('sort', stateFetch.filteredTickets);
-  // }, [stateFetch.sort, stateFetch.filteredTickets]);
+  useEffect(() => {
+    if (stateFetch.filteredTickets.length !== 0) {
+      if (stateFetch.sort === 'cheapest') dispatch(cheapest());
+      if (stateFetch.sort === 'fastest') dispatch(fastest());
+      if (stateFetch.sort === 'optimal') dispatch(optimal());
+    }
+  }, [stateFetch.filteredTickets]);
   return (
     <div className={styles.app}>
       {isMobile && (
@@ -50,8 +69,8 @@ function App(): ReactElement {
       <img className={styles.logo} src={Logo} alt="logo" />
       {(stateFetch.loading || isLoading) && <Spin style={{ marginBottom: 20, marginTop: -40 }} />}
       <div className={styles['app-page']}>
-        {!isMobile && <AsideMenu />}
-        <Main tickets={stateFetch.filteredTickets} />
+        {!isMobile && isFilter && <AsideMenu />}
+        {isFilter && <Main tickets={stateFetch.filteredTickets} />}
       </div>
     </div>
   );

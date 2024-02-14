@@ -1,21 +1,29 @@
+import { lightFormat } from 'date-fns';
+
 import styles from './index.module.scss';
 
 type Segments = {
   origin: string;
   destination: string;
-  date?: string;
+  date: string;
   stops: string[];
   duration: number;
 };
 
-const TicketInfo = ({ origin, destination, stops, duration }: Segments) => {
+const TicketInfo = ({ origin, destination, stops, duration, date }: Segments) => {
+  const departureTime = lightFormat(new Date(date), 'HH:mm');
+  const arrivalDate = new Date(date).getTime() + duration * 60000;
+  const arrivalTime = lightFormat(new Date(arrivalDate), 'HH:mm');
+  // console.log(arrivalTime);
   return (
     <>
       <div className={styles.info}>
         <span className={styles.textHeader}>
           {origin} - {destination}
         </span>
-        <span className={styles.text}>10:45 - 08:00</span>
+        <span className={styles.text}>
+          {departureTime} - {arrivalTime}
+        </span>
       </div>
       <div className={styles.info}>
         <span className={styles.textHeader}>B ПУТИ</span>

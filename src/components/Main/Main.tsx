@@ -25,11 +25,11 @@ type TicketType = {
   segments: Segments[];
 };
 
-type FetchTicketsType = {
+type MainPropsType = {
   tickets: TicketType[];
 };
 
-const Main = ({ tickets }: FetchTicketsType) => {
+const Main = ({ tickets }: MainPropsType) => {
   // const [ticketsCount, setTicketsCount] = useState(5);
   const fetchState = useAppSelector((state) => state.fetch);
 
@@ -50,12 +50,13 @@ const Main = ({ tickets }: FetchTicketsType) => {
   return (
     <main className={styles.main}>
       <MainHeader />
-      {!isFilter
-        ? 'ПО ВАШЕМУ ЗАПРОСУ БИЛЕТОВ НЕ НАЙДЕНО'
-        : displayTickets.map((ticket) => {
-            console.log(ticket);
-            return <Ticket key={uniqid.time('ticket-')} {...ticket} />;
-          })}
+      {!isFilter ? (
+        <span>Рейсов, подходящих под заданные фильтры, не найдено</span>
+      ) : (
+        displayTickets.map((ticket) => {
+          return <Ticket key={uniqid.time('ticket-')} {...ticket} />;
+        })
+      )}
       {isFilter && <MainFooter />}
     </main>
   );

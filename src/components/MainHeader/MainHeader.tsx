@@ -11,7 +11,9 @@ const MainHeader = () => {
       <button
         id={'cheapest'}
         aria-label="cheapest"
-        onClick={() => dispatch(cheapest())}
+        onClick={() => {
+          dispatch(cheapest());
+        }}
         className={stateFetch.sort === 'cheapest' ? styles.headerButtonActive : styles.headerButton}
       >
         <span className={styles.text}>САМЫЙ ДЕШЕВЫЙ</span>
@@ -19,7 +21,9 @@ const MainHeader = () => {
       <button
         id={'fastest'}
         aria-label="fastest"
-        onClick={() => dispatch(fastest())}
+        onClick={() => {
+          dispatch(fastest());
+        }}
         className={stateFetch.sort === 'fastest' ? styles.headerButtonActive : styles.headerButton}
       >
         <span className={styles.text}>САМЫЙ БЫСТРЫЙ</span>
@@ -27,7 +31,9 @@ const MainHeader = () => {
       <button
         id={'optimal'}
         aria-label="optimal"
-        onClick={() => dispatch(optimal())}
+        onClick={() => {
+          dispatch(optimal());
+        }}
         className={stateFetch.sort === 'optimal' ? styles.headerButtonActive : styles.headerButton}
       >
         <span className={styles.text}>ОПТИМАЛЬНЫЙ</span>

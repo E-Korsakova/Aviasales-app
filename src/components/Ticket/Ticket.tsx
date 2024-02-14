@@ -31,7 +31,6 @@ const Ticket = ({ carrier, price, segments }: TicketProps) => {
           price &&
           segments[0] &&
           segments.map((segment) => {
-            console.log(segments);
             return <TicketInfo key={segments.indexOf(segment)} {...segment} />;
           })}
       </main>

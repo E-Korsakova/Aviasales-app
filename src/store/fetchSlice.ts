@@ -80,11 +80,11 @@ export const fetchTickets = createAsyncThunk<{ tickets: TicketType[]; stop: bool
   }
 );
 
-export const getFilteredTickets = createAsyncThunk<TicketType[], undefined, { state: { fetch: FetchState } }>(
+export const getFilteredTickets = createAsyncThunk<TicketType[], { tickets: TicketType[]; filters: Filter }>(
   'fetch/getFilteredTickets',
-  async function (_, { getState }) {
-    const tickets = getState().fetch.tickets;
-    const filters = getState().fetch.filters;
+  async function ({ tickets, filters }) {
+    // const tickets = getState().fetch.tickets;
+    // const filters = getState().fetch.filters;
     // console.log('tick', tickets);
     const filteredTickets: TicketType[] = [];
 
@@ -108,6 +108,7 @@ export const getFilteredTickets = createAsyncThunk<TicketType[], undefined, { st
         ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 3)
       );
     }
+    // console.log('filter');
     return filteredTickets;
   }
 );
@@ -157,6 +158,7 @@ export const fetchSlice = createSlice({
       }
     },
     setAll(state) {
+      state.filteredTickets = [];
       if (state.isShowMore) {
         state.isShowMore = false;
         state.showMoreCount = 5;
@@ -171,6 +173,7 @@ export const fetchSlice = createSlice({
       };
     },
     setNoTransfers(state) {
+      state.filteredTickets = [];
       if (state.isShowMore) {
         state.isShowMore = false;
         state.showMoreCount = 5;
@@ -186,6 +189,7 @@ export const fetchSlice = createSlice({
       };
     },
     setOneTransfer(state) {
+      state.filteredTickets = [];
       if (state.isShowMore) {
         state.isShowMore = false;
         state.showMoreCount = 5;
@@ -201,6 +205,7 @@ export const fetchSlice = createSlice({
       };
     },
     setTwoTransfer(state) {
+      state.filteredTickets = [];
       if (state.isShowMore) {
         state.isShowMore = false;
         state.showMoreCount = 5;
@@ -216,6 +221,7 @@ export const fetchSlice = createSlice({
       };
     },
     setThreeTransfer(state) {
+      state.filteredTickets = [];
       if (state.isShowMore) {
         state.isShowMore = false;
         state.showMoreCount = 5;
@@ -231,50 +237,44 @@ export const fetchSlice = createSlice({
       };
     },
     cheapest: (state) => {
-      if (state.sort !== 'cheapest') {
-        if (state.isShowMore) {
-          state.isShowMore = false;
-          state.showMoreCount = 5;
-        }
-        state.sort = 'cheapest';
-        state.loading = true;
-        state.filteredTickets.sort((a, b) => {
-          return a.price - b.price;
-        });
-        state.loading = false;
+      if (state.isShowMore) {
+        state.isShowMore = false;
+        state.showMoreCount = 5;
       }
+      state.sort = 'cheapest';
+      state.loading = true;
+      state.filteredTickets.sort((a, b) => {
+        return a.price - b.price;
+      });
+      state.loading = false;
     },
     fastest: (state) => {
-      if (state.sort !== 'fastest') {
-        if (state.isShowMore) {
-          state.isShowMore = false;
-          state.showMoreCount = 5;
-        }
-        state.sort = 'fastest';
-        state.loading = true;
-        state.filteredTickets.sort((a, b) => {
-          const timeA = a.segments[0].duration + a.segments[1].duration;
-          const timeB = b.segments[0].duration + b.segments[1].duration;
-          return timeA - timeB;
-        });
-        state.loading = false;
+      if (state.isShowMore) {
+        state.isShowMore = false;
+        state.showMoreCount = 5;
       }
+      state.sort = 'fastest';
+      state.loading = true;
+      state.filteredTickets.sort((a, b) => {
+        const timeA = a.segments[0].duration + a.segments[1].duration;
+        const timeB = b.segments[0].duration + b.segments[1].duration;
+        return timeA - timeB;
+      });
+      state.loading = false;
     },
     optimal: (state) => {
-      if (state.sort !== 'optimal') {
-        if (state.isShowMore) {
-          state.isShowMore = false;
-          state.showMoreCount = 5;
-        }
-        state.sort = 'optimal';
-        state.loading = true;
-        state.filteredTickets.sort((a, b) => {
-          const timeA = a.segments[0].duration + a.segments[1].duration;
-          const timeB = b.segments[0].duration + b.segments[1].duration;
-          return a.price - b.price || timeA - timeB;
-        });
-        state.loading = false;
+      if (state.isShowMore) {
+        state.isShowMore = false;
+        state.showMoreCount = 5;
       }
+      state.sort = 'optimal';
+      state.loading = true;
+      state.filteredTickets.sort((a, b) => {
+        const timeA = a.segments[0].duration + a.segments[1].duration;
+        const timeB = b.segments[0].duration + b.segments[1].duration;
+        return a.price - b.price || timeA - timeB;
+      });
+      state.loading = false;
     },
   },
   extraReducers: (builder) => {
@@ -307,7 +307,7 @@ export const fetchSlice = createSlice({
           state.filters.threeTransfers
         )
           state.filteredTickets.push(...action.payload);
-        state.loading = false;
+        if (state.stop) state.loading = false;
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.loading = false;
