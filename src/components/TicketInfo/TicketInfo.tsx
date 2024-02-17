@@ -14,7 +14,6 @@ const TicketInfo = ({ origin, destination, stops, duration, date }: Segments) =>
   const departureTime = lightFormat(new Date(date), 'HH:mm');
   const arrivalDate = new Date(date).getTime() + duration * 60000;
   const arrivalTime = lightFormat(new Date(arrivalDate), 'HH:mm');
-  // console.log(arrivalTime);
   return (
     <>
       <div className={styles.info}>

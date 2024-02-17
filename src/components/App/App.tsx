@@ -6,7 +6,7 @@ import { AsideMenu } from '../AsideMenu';
 import { Main } from '../Main';
 import Logo from '../../data/images/Logo.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { cheapest, fastest, fetchTickets, getFilteredTickets, optimal, searchId } from '../../store/fetchSlice';
+import { setSort, fetchTickets, getFilteredTickets, searchId } from '../../store/fetchSlice';
 
 import styles from './index.module.scss';
 
@@ -22,22 +22,17 @@ function App(): ReactElement {
   useEffect(() => {
     setIsLoading(true);
     dispatch(searchId());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (stateFetch.searchId && !stateFetch.stop && !stateFetch.loading) dispatch(fetchTickets(stateFetch.searchId));
     if (stateFetch.stop) setIsLoading(false);
-  }, [stateFetch.searchId, stateFetch.loading]);
+  }, [stateFetch.searchId, stateFetch.loading, dispatch, stateFetch.stop]);
 
   useEffect(() => {
     setIsFilter(false);
     if (stateFetch.tickets.length !== 0) {
-      // setIsLoading(true);
       dispatch(getFilteredTickets(stateFetch));
-      // setIsLoading(false);
-      // if (stateFetch.sort === 'cheapest') dispatch(cheapest());
-      // if (stateFetch.sort === 'fastest') dispatch(fastest());
-      // if (stateFetch.sort === 'optimal') dispatch(optimal());
       setIsFilter(true);
     }
   }, [
@@ -47,15 +42,16 @@ function App(): ReactElement {
     stateFetch.filters.twoTransfers,
     stateFetch.filters.threeTransfers,
     stateFetch.tickets,
+    dispatch,
   ]);
 
   useEffect(() => {
     if (stateFetch.filteredTickets.length !== 0) {
-      if (stateFetch.sort === 'cheapest') dispatch(cheapest());
-      if (stateFetch.sort === 'fastest') dispatch(fastest());
-      if (stateFetch.sort === 'optimal') dispatch(optimal());
+      if (stateFetch.sort === 'cheapest') dispatch(setSort('cheapest'));
+      if (stateFetch.sort === 'fastest') dispatch(setSort('fastest'));
+      if (stateFetch.sort === 'optimal') dispatch(setSort('optimal'));
     }
-  }, [stateFetch.filteredTickets]);
+  }, [stateFetch.filteredTickets, dispatch, stateFetch.sort]);
   return (
     <div className={styles.app}>
       {isMobile && (

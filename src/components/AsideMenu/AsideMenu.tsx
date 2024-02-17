@@ -2,16 +2,7 @@ import { ReactElement } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import {
-  // cheapest,
-  // fastest,
-  // optimal,
-  setAll,
-  setNoTransfers,
-  setOneTransfer,
-  setThreeTransfer,
-  setTwoTransfer,
-} from '../../store/fetchSlice';
+import { setIsChecked } from '../../store/fetchSlice';
 
 import styles from './index.module.scss';
 
@@ -41,10 +32,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           name="transfer-all"
           checked={stateFetch.filters.all}
           onChange={() => {
-            dispatch(setAll());
-            // if (stateFetch.sort === 'cheapest') dispatch(cheapest());
-            // if (stateFetch.sort === 'fastest') dispatch(fastest());
-            // if (stateFetch.sort === 'optimal') dispatch(optimal());
+            dispatch(setIsChecked('all'));
           }}
         />
         <span className={styles.text}>Bce</span>
@@ -57,10 +45,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           name="transfer-0"
           checked={stateFetch.filters.noTransfers}
           onChange={() => {
-            dispatch(setNoTransfers());
-            // if (stateFetch.sort === 'cheapest') dispatch(cheapest());
-            // if (stateFetch.sort === 'fastest') dispatch(fastest());
-            // if (stateFetch.sort === 'optimal') dispatch(optimal());
+            dispatch(setIsChecked('noTransfers'));
           }}
         />
         <span className={styles.text}>Без пересадок</span>
@@ -73,10 +58,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           name="transfer-1"
           checked={stateFetch.filters.oneTransfer}
           onChange={() => {
-            dispatch(setOneTransfer());
-            // if (stateFetch.sort === 'cheapest') dispatch(cheapest());
-            // if (stateFetch.sort === 'fastest') dispatch(fastest());
-            // if (stateFetch.sort === 'optimal') dispatch(optimal());
+            dispatch(setIsChecked('oneTransfer'));
           }}
         />
         <span className={styles.text}>1 пересадка</span>
@@ -89,10 +71,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           name="transfer-2"
           checked={stateFetch.filters.twoTransfers}
           onChange={() => {
-            dispatch(setTwoTransfer());
-            // if (stateFetch.sort === 'cheapest') dispatch(cheapest());
-            // if (stateFetch.sort === 'fastest') dispatch(fastest());
-            // if (stateFetch.sort === 'optimal') dispatch(optimal());
+            dispatch(setIsChecked('twoTransfers'));
           }}
         />
         <span className={styles.text}>2 пересадки</span>
@@ -105,10 +84,7 @@ const AsideMenu = ({ isOpen }: AsideMenuProps): ReactElement => {
           name="transfer-3"
           checked={stateFetch.filters.threeTransfers}
           onChange={() => {
-            dispatch(setThreeTransfer());
-            // if (stateFetch.sort === 'cheapest') dispatch(cheapest());
-            // if (stateFetch.sort === 'fastest') dispatch(fastest());
-            // if (stateFetch.sort === 'optimal') dispatch(optimal());
+            dispatch(setIsChecked('threeTransfers'));
           }}
         />
         <span className={styles.text}>3 пересадки</span>

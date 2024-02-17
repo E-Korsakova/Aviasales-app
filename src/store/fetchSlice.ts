@@ -83,9 +83,6 @@ export const fetchTickets = createAsyncThunk<{ tickets: TicketType[]; stop: bool
 export const getFilteredTickets = createAsyncThunk<TicketType[], { tickets: TicketType[]; filters: Filter }>(
   'fetch/getFilteredTickets',
   async function ({ tickets, filters }) {
-    // const tickets = getState().fetch.tickets;
-    // const filters = getState().fetch.filters;
-    // console.log('tick', tickets);
     const filteredTickets: TicketType[] = [];
 
     if (filters.noTransfers) {
@@ -108,40 +105,9 @@ export const getFilteredTickets = createAsyncThunk<TicketType[], { tickets: Tick
         ...tickets.filter((ticket) => Math.max(ticket.segments[0].stops.length, ticket.segments[1].stops.length) === 3)
       );
     }
-    // console.log('filter');
     return filteredTickets;
   }
 );
-
-// export const getSortedTickets = createAsyncThunk<TicketType[], undefined, { state: { fetch: FetchState } }>(
-//   'fetch/getSortedTickets',
-//   async function (_, { getState }) {
-//     const sort = getState().fetch.sort;
-//     let sorted = [];
-//     const filteredTickets = getState().fetch.filteredTickets;
-//     if (sort === 'cheapest') {
-//       sorted = await filteredTickets.sort((a, b) => a.price - b.price);
-//       return sorted;
-//     }
-//     if (sort === 'fastest') {
-//       sorted = await filteredTickets.sort((a, b) => {
-//         const timeA = a.segments[0].duration + a.segments[1].duration;
-//         const timeB = b.segments[0].duration + b.segments[1].duration;
-//         return timeA - timeB;
-//       });
-//       return sorted;
-//     }
-//     if (sort === 'optimal') {
-//       sorted = await filteredTickets.sort((a, b) => {
-//         const timeA = a.segments[0].duration + a.segments[1].duration;
-//         const timeB = b.segments[0].duration + b.segments[1].duration;
-//         return a.price - b.price || timeA - timeB;
-//       });
-//       return sorted;
-//     }
-//     return filteredTickets;
-//   }
-// );
 
 function isError(action: Action) {
   return action.type.endsWith('rejected');
@@ -157,123 +123,95 @@ export const fetchSlice = createSlice({
         state.showMoreCount += 5;
       }
     },
-    setAll(state) {
+    setIsChecked(state, action) {
       state.filteredTickets = [];
       if (state.isShowMore) {
         state.isShowMore = false;
         state.showMoreCount = 5;
       }
-      const all = !state.filters.all;
-      state.filters = {
-        all,
-        noTransfers: all,
-        oneTransfer: all,
-        twoTransfers: all,
-        threeTransfers: all,
-      };
+      if (action.payload === 'all') {
+        const all = !state.filters.all;
+        state.filters = {
+          all,
+          noTransfers: all,
+          oneTransfer: all,
+          twoTransfers: all,
+          threeTransfers: all,
+        };
+      }
+      if (action.payload === 'noTransfers') {
+        state.filters = {
+          ...state.filters,
+          all:
+            !state.filters.noTransfers &&
+            state.filters.oneTransfer &&
+            state.filters.twoTransfers &&
+            state.filters.threeTransfers,
+          noTransfers: !state.filters.noTransfers,
+        };
+      }
+      if (action.payload === 'oneTransfer') {
+        state.filters = {
+          ...state.filters,
+          all:
+            state.filters.noTransfers &&
+            !state.filters.oneTransfer &&
+            state.filters.twoTransfers &&
+            state.filters.threeTransfers,
+          oneTransfer: !state.filters.oneTransfer,
+        };
+      }
+      if (action.payload === 'twoTransfers') {
+        state.filters = {
+          ...state.filters,
+          all:
+            state.filters.noTransfers &&
+            state.filters.oneTransfer &&
+            !state.filters.twoTransfers &&
+            state.filters.threeTransfers,
+          twoTransfers: !state.filters.twoTransfers,
+        };
+      }
+      if (action.payload === 'threeTransfers') {
+        state.filters = {
+          ...state.filters,
+          all:
+            state.filters.noTransfers &&
+            state.filters.oneTransfer &&
+            state.filters.twoTransfers &&
+            !state.filters.threeTransfers,
+          threeTransfers: !state.filters.threeTransfers,
+        };
+      }
     },
-    setNoTransfers(state) {
-      state.filteredTickets = [];
+    setSort(state, action) {
       if (state.isShowMore) {
         state.isShowMore = false;
         state.showMoreCount = 5;
       }
-      state.filters = {
-        ...state.filters,
-        all:
-          !state.filters.noTransfers &&
-          state.filters.oneTransfer &&
-          state.filters.twoTransfers &&
-          state.filters.threeTransfers,
-        noTransfers: !state.filters.noTransfers,
-      };
-    },
-    setOneTransfer(state) {
-      state.filteredTickets = [];
-      if (state.isShowMore) {
-        state.isShowMore = false;
-        state.showMoreCount = 5;
-      }
-      state.filters = {
-        ...state.filters,
-        all:
-          state.filters.noTransfers &&
-          !state.filters.oneTransfer &&
-          state.filters.twoTransfers &&
-          state.filters.threeTransfers,
-        oneTransfer: !state.filters.oneTransfer,
-      };
-    },
-    setTwoTransfer(state) {
-      state.filteredTickets = [];
-      if (state.isShowMore) {
-        state.isShowMore = false;
-        state.showMoreCount = 5;
-      }
-      state.filters = {
-        ...state.filters,
-        all:
-          state.filters.noTransfers &&
-          state.filters.oneTransfer &&
-          !state.filters.twoTransfers &&
-          state.filters.threeTransfers,
-        twoTransfers: !state.filters.twoTransfers,
-      };
-    },
-    setThreeTransfer(state) {
-      state.filteredTickets = [];
-      if (state.isShowMore) {
-        state.isShowMore = false;
-        state.showMoreCount = 5;
-      }
-      state.filters = {
-        ...state.filters,
-        all:
-          state.filters.noTransfers &&
-          state.filters.oneTransfer &&
-          state.filters.twoTransfers &&
-          !state.filters.threeTransfers,
-        threeTransfers: !state.filters.threeTransfers,
-      };
-    },
-    cheapest: (state) => {
-      if (state.isShowMore) {
-        state.isShowMore = false;
-        state.showMoreCount = 5;
-      }
-      state.sort = 'cheapest';
       state.loading = true;
-      state.filteredTickets.sort((a, b) => {
-        return a.price - b.price;
-      });
-      state.loading = false;
-    },
-    fastest: (state) => {
-      if (state.isShowMore) {
-        state.isShowMore = false;
-        state.showMoreCount = 5;
+      if (action.payload === 'cheapest') {
+        state.sort = 'cheapest';
+        state.filteredTickets.sort((a, b) => {
+          return a.price - b.price;
+        });
       }
-      state.sort = 'fastest';
-      state.loading = true;
-      state.filteredTickets.sort((a, b) => {
-        const timeA = a.segments[0].duration + a.segments[1].duration;
-        const timeB = b.segments[0].duration + b.segments[1].duration;
-        return timeA - timeB;
-      });
-      state.loading = false;
-    },
-    optimal: (state) => {
-      if (state.isShowMore) {
-        state.isShowMore = false;
-        state.showMoreCount = 5;
+      if (action.payload === 'fastest') {
+        state.sort = 'fastest';
+        state.filteredTickets.sort((a, b) => {
+          const timeA = a.segments[0].duration + a.segments[1].duration;
+          const timeB = b.segments[0].duration + b.segments[1].duration;
+          return timeA - timeB;
+        });
       }
-      state.sort = 'optimal';
-      state.loading = true;
-      state.filteredTickets.sort((a, b) => {
-        const timeA = a.segments[0].duration + a.segments[1].duration;
-        const timeB = b.segments[0].duration + b.segments[1].duration;
-        return a.price - b.price || timeA - timeB;
-      });
+      if (action.payload === 'optimal') {
+        state.sort = 'optimal';
+        state.filteredTickets.sort((a, b) => {
+          const timeA = a.segments[0].duration + a.segments[1].duration;
+          const timeB = b.segments[0].duration + b.segments[1].duration;
+          return a.price - b.price || timeA - timeB;
+        });
+      }
       state.loading = false;
     },
   },
@@ -316,16 +254,6 @@ export const fetchSlice = createSlice({
   },
 });
 
-export const {
-  setAll,
-  setNoTransfers,
-  setOneTransfer,
-  setTwoTransfer,
-  setThreeTransfer,
-  cheapest,
-  fastest,
-  optimal,
-  showMore,
-} = fetchSlice.actions;
+export const { setIsChecked, setSort, showMore } = fetchSlice.actions;
 
 export default fetchSlice.reducer;

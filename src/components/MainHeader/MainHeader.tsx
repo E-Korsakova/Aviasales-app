@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { cheapest, fastest, optimal } from '../../store/fetchSlice';
+import { setSort } from '../../store/fetchSlice';
 
 import styles from './index.module.scss';
 
@@ -12,7 +12,7 @@ const MainHeader = () => {
         id={'cheapest'}
         aria-label="cheapest"
         onClick={() => {
-          dispatch(cheapest());
+          dispatch(setSort('cheapest'));
         }}
         className={stateFetch.sort === 'cheapest' ? styles.headerButtonActive : styles.headerButton}
       >
@@ -22,7 +22,7 @@ const MainHeader = () => {
         id={'fastest'}
         aria-label="fastest"
         onClick={() => {
-          dispatch(fastest());
+          dispatch(setSort('fastest'));
         }}
         className={stateFetch.sort === 'fastest' ? styles.headerButtonActive : styles.headerButton}
       >
@@ -32,7 +32,7 @@ const MainHeader = () => {
         id={'optimal'}
         aria-label="optimal"
         onClick={() => {
-          dispatch(optimal());
+          dispatch(setSort('optimal'));
         }}
         className={stateFetch.sort === 'optimal' ? styles.headerButtonActive : styles.headerButton}
       >

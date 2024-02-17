@@ -1,13 +1,9 @@
-// import { useState } from 'react';
-
 import uniqid from 'uniqid';
 
 import { MainHeader } from '../MainHeader';
 import { MainFooter } from '../MainFooter';
 import { Ticket } from '../Ticket';
 import { useAppSelector } from '../../hooks';
-// import { getFilteredTickets } from '../../store/getFilteredTickets';
-// import { getSortedTickets } from '../../store/getSortedTickets';
 
 import styles from './index.module.scss';
 
@@ -30,7 +26,6 @@ type MainPropsType = {
 };
 
 const Main = ({ tickets }: MainPropsType) => {
-  // const [ticketsCount, setTicketsCount] = useState(5);
   const fetchState = useAppSelector((state) => state.fetch);
 
   const isFilter =
@@ -42,11 +37,9 @@ const Main = ({ tickets }: MainPropsType) => {
   const displayTickets: TicketType[] = [];
   if (isFilter) {
     for (let i = 0; i < fetchState.showMoreCount; i++) {
-      // console.log(`${i} билет`, tickets[i]);
       displayTickets.push(tickets[i]);
     }
   }
-  // console.log(displayTickets);
   return (
     <main className={styles.main}>
       <MainHeader />

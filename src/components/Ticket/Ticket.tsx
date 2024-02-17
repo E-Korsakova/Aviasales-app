@@ -1,5 +1,4 @@
 import { TicketInfo } from '../TicketInfo';
-// import S7Logo from '../../data/images/S7_Logo.svg';
 
 import styles from './index.module.scss';
 
@@ -18,8 +17,6 @@ type TicketProps = {
 };
 
 const Ticket = ({ carrier, price, segments }: TicketProps) => {
-  // console.log(carrier, price, segments);
-
   return (
     <div className={styles.ticket}>
       <header className={styles.ticketHeader}>

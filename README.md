@@ -1,1 +1,1 @@
-vercel: https://aviasales-olsv4z67g-hellnos-projects.vercel.app
+vercel: https://aviasales-4lemk62pe-hellnos-projects.vercel.app/
